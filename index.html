@@ -514,6 +514,8 @@ html body.lz .bw svg path{stroke-width:1.8}
 html.sm,html.sm body{height:var(--VH)!important;overflow:hidden!important}
 html.sm #app{width:var(--W);height:var(--H);transform:scale(var(--K));transform-origin:0 0}
 html body.lu #addbtn{clip-path:none!important;font-style:normal!important}
+html.sm body{position:fixed!important;left:0;top:0;width:100%;overscroll-behavior:none}
+html.sm #app{contain:layout paint}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Alfa+Slab+One&family=Playfair+Display:wght@700;800&family=Zen+Kaku+Gothic+New:wght@700;900&family=Russo+One&family=M+PLUS+Rounded+1c:wght@700;800&family=Zen+Maru+Gothic:wght@500;700&family=Barlow+Condensed:ital,wght@0,700;1,700;1,800&family=Orbitron:wght@700;900&display=swap">
 </head>
@@ -978,6 +980,7 @@ function openSettings(openStyle){
     o.className="mi op"+(on?" on":"");o.dataset.k=k;o.textContent=n+(on?" ✓":"");
     o.onclick=()=>{S.style=k;applyStyle();save();openSettings(true)};box.appendChild(o);
   });
+  const vi=document.createElement("div");vi.style.cssText="text-align:center;font-size:11px;opacity:.6;margin-top:10px";vi.textContent="ver 151 / "+innerWidth+"×"+innerHeight+" / 縮小 "+KK();pbody.appendChild(vi);
   pop.classList.add("on");
 }
 function openReset(){
