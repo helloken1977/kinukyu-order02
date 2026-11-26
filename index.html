@@ -511,6 +511,8 @@ html body.lz #vsw{background:#00f5ff!important;color:#000056!important;border-co
 html body.lz #stbtn svg{fill:#000056;stroke:#000056}
 html body.lz #cur{background:none!important;border:none!important;box-shadow:none!important}
 html body.lz .bw svg path{stroke-width:1.8}
+html.sm,html.sm body{height:var(--VH)!important;overflow:hidden!important}
+html.sm #app{width:var(--W);height:var(--H);transform:scale(var(--K));transform-origin:0 0}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Alfa+Slab+One&family=Playfair+Display:wght@700;800&family=Zen+Kaku+Gothic+New:wght@700;900&family=Russo+One&family=M+PLUS+Rounded+1c:wght@700;800&family=Zen+Maru+Gothic:wght@500;700&family=Barlow+Condensed:ital,wght@0,700;1,700;1,800&family=Orbitron:wght@700;900&display=swap">
 </head>
@@ -606,8 +608,10 @@ function idbOp(mode,fn){return new Promise(res=>{try{const r=indexedDB.open("lin
 const idbSet=(k,v)=>mirrorOn?idbOp("readwrite",st=>st.put(v,k)):null;
 const idbGet=k=>idbOp("readonly",st=>st.get(k));
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+function KK(){return parseFloat(document.documentElement.style.getPropertyValue("--K"))||1}
+function RU(el){const r=el.getBoundingClientRect(),k=KK();return{left:r.left/k,top:r.top/k,right:r.right/k,bottom:r.bottom/k,width:r.width/k,height:r.height/k}}
 function defaultPlayers(){
-  const tr=document.getElementById("top").getBoundingClientRect(),sr=document.getElementById("fieldsvg").getBoundingClientRect();
+  const tr=RU(document.getElementById("top")),sr=RU(document.getElementById("fieldsvg"));
   const Ht=tr.height||450,sh=sr.height||370,off=sr.top-tr.top;
   const m=(vx,vy)=>({x:(vx-4)/200*100,y:(off+(vy+24)/244*sh)/Ht*100});
   const pos=[[104,121],[104,200],[160,112],[125,88],[48,112],[83,88],[30,48],[104,30],[178,48]];
@@ -615,7 +619,7 @@ function defaultPlayers(){
   [14,32,50,68,86].forEach((x,i)=>a.push({id:10+i,num:String(10+i),name:"",c:0,x:x,y:100-26/Ht*100}));
   return a;
 }
-function geo(){return{Ht:document.getElementById("top").getBoundingClientRect().height,sh:document.getElementById("fieldsvg").getBoundingClientRect().height,b:(S.view==="field"?76:52),u0:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[1],uh:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[3],x0:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[0],w:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[2]}}
+function geo(){return{Ht:RU(document.getElementById("top")).height,sh:RU(document.getElementById("fieldsvg")).height,b:(S.view==="field"?76:52),u0:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[1],uh:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[3],x0:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[0],w:+document.getElementById("fieldsvg").getAttribute("viewBox").split(" ")[2]}}
 function applyLayout(){
   const bt=document.getElementById("bottom"),sv=document.getElementById("fieldsvg"),tp=document.getElementById("top"),mode=S.view||"all";
   if(mode==="list"){bt.style.height="";return}
@@ -665,7 +669,7 @@ function shirt(c,num){
 function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 
 function fitY(el,p){
-  const r=field.getBoundingClientRect();if(!r.height)return;
+  const r=RU(field);if(!r.height)return;
   const mx=100-(el.offsetHeight/2)/r.height*100;
   if(p.y>mx){p.y=mx;el.style.top=p.y+"%"}
 }
@@ -701,9 +705,9 @@ function bindDrag(el,p){
     const dx=e.clientX-sx,dy=e.clientY-sy;
     if(Math.abs(dx)+Math.abs(dy)>6)moved=true;
     if(!moved)return;
-    const r=field.getBoundingClientRect();
-    p.x=Math.max(4,Math.min(96,ox+dx/r.width*100));
-    p.y=Math.max(el.offsetHeight/2/r.height*100,Math.min(100-(el.offsetHeight/2)/r.height*100,oy+dy/r.height*100));
+    const r=RU(field),k=KK();
+    p.x=Math.max(4,Math.min(96,ox+dx/k/r.width*100));
+    p.y=Math.max(el.offsetHeight/2/r.height*100,Math.min(100-(el.offsetHeight/2)/r.height*100,oy+dy/k/r.height*100));
     el.style.left=p.x+"%";el.style.top=p.y+"%";
     if((S.view||"all")==="all"&&e.clientY>document.getElementById("bottom").getBoundingClientRect().top)ghostOn(e,p);else ghostOff();
   });
@@ -892,7 +896,7 @@ function setListSize(){
   const bt=document.getElementById("bottom");
   if((S.view||"all")!=="list"){bt.style.removeProperty("--rh");return}
   const H=document.getElementById("app").offsetHeight,n=Math.max(9,S.order.length)+6;
-  bt.style.setProperty("--rh",Math.max(30,Math.min(60,Math.floor((H-175)/n)-4,Math.floor((innerWidth-126)/6.5)))+"px");
+  bt.style.setProperty("--rh",Math.max(30,Math.min(60,Math.floor((H-175)/n)-4,Math.floor((document.getElementById("app").offsetWidth-126)/6.5)))+"px");
 }
 function centerBench(){const g=geo(),lim=g.Ht-g.b;S.players.forEach(q=>{if(q.y/100*g.Ht>lim)q.y=(g.Ht-g.b/2)/g.Ht*100})}
 function applyBand(){
@@ -950,7 +954,7 @@ function syncNmFont(){
 }
 function placeSt(){
   const v=document.getElementById("vsw"),b=document.getElementById("stbtn");if(!v||!b)return;
-  const c=getComputedStyle(v),r=v.getBoundingClientRect();
+  const c=getComputedStyle(v),r=RU(v);
   ["backgroundColor","backgroundImage","color","border","borderRadius","boxShadow","opacity","clipPath","filter"].forEach(k=>b.style[k]=c[k]);
   b.style.height=r.height+"px";b.style.left=(r.right+6)+"px";
 }
