@@ -10,7 +10,7 @@
 <link rel="icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000056">
-<script>(function(){function f(){var h=Math.max(Math.min(Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight||0),(screen.height||9999)),760)+"px",r=document.documentElement.style;if(r.getPropertyValue("--H")!==h){r.setProperty("--H",h);return true}return false}f();window.__setH=f})();</script>
+<script>(function(){var last="";function f(){var a=document.activeElement;if(last&&a&&/^(INPUT|TEXTAREA)$/.test(a.tagName))return false;var vv=window.visualViewport,vh=Math.round((vv&&vv.height)||window.innerHeight||0),vw=Math.round((vv&&vv.width)||window.innerWidth||0),v=Math.min(vh,window.innerHeight||vh,screen.height||9999),r=document.documentElement,pd=0;try{var q=document.createElement("div");q.style.cssText="position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)";r.appendChild(q);var c=getComputedStyle(q);pd=parseFloat(c.paddingTop)+parseFloat(c.paddingBottom)||0;r.removeChild(q)}catch(e){}var av=v-pd,K=1,h;if(av<760){K=Math.max(.6,Math.floor(av/760*1000)/1000);h="760px"}else h=Math.max(v,760)+"px";var key=h+"|"+K+"|"+vw+"|"+v;if(key===last)return false;last=key;var st=r.style;st.setProperty("--H",h);st.setProperty("--K",String(K));st.setProperty("--VH",v+"px");st.setProperty("--W",(K<1?Math.round(vw/K):vw)+"px");r.classList.toggle("sm",K<1);return true}f();window.__setH=f;document.addEventListener("DOMContentLoaded",f)})();</script>
 <title>KINUKYU ORDER</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <style>
@@ -980,7 +980,7 @@ function openSettings(openStyle){
     o.className="mi op"+(on?" on":"");o.dataset.k=k;o.textContent=n+(on?" ✓":"");
     o.onclick=()=>{S.style=k;applyStyle();save();openSettings(true)};box.appendChild(o);
   });
-  const vi=document.createElement("div");vi.style.cssText="text-align:center;font-size:11px;opacity:.6;margin-top:10px";vi.textContent="ver 151 / "+innerWidth+"×"+innerHeight+" / 縮小 "+KK();pbody.appendChild(vi);
+  const vi=document.createElement("div");vi.style.cssText="text-align:center;font-size:11px;opacity:.6;margin-top:10px";vi.textContent="ver 152 / "+innerWidth+"×"+innerHeight+" / 縮小 "+KK();pbody.appendChild(vi);
   pop.classList.add("on");
 }
 function openReset(){
